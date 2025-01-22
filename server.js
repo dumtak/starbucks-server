@@ -9,7 +9,6 @@ const crypto = require("crypto");
 const bcrypt = require('bcrypt');
 const privateKey = crypto.randomBytes(32).toString('hex');
 
-
 app.use(express.json());
 app.use(cors({
     origin: ['http://localhost:3000'],
@@ -26,10 +25,10 @@ models.sequelize.sync()
 
 //회원가입
 app.post('/users', async (req, res) => {
-    const { user_id, pw, name, phone, email, birth, sex, marketingChecked } = req.body;
+    const { type, user_id, pw, name, phone, email, birth, sex, allTermsChecked } = req.body;
 
     // 필수 필드 체크
-    if (!user_id || !pw || !name || !phone || !email || !marketingChecked) {
+    if (!type || !user_id || !pw || !name || !phone || !email || !allTermsChecked) {
         console.log("Missing fields:", req.body);
         return res.status(400).send('모든 필드를 입력해주세요');
     }
@@ -46,6 +45,7 @@ app.post('/users', async (req, res) => {
 
         // 새 사용자 생성
         const newUser = await models.User.create({
+            type,
             user_id: user_id,
             pw: hashedPassword, // 해시된 비밀번호 저장
             name,
@@ -53,7 +53,7 @@ app.post('/users', async (req, res) => {
             email,
             birth, 
             sex,
-            marketingChecked
+            allTermsChecked
         });
 
         // 성공 응답

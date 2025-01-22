@@ -1,13 +1,18 @@
 module.exports = (sequelize, DataTypes) => {
   const user = sequelize.define("User", {
       id: {
-          type: DataTypes.INTEGER,
+          type: DataTypes.INTEGER,  
           primaryKey: true,
           autoIncrement: true,
+      },
+      type: {
+          type: DataTypes.ENUM('individual', 'business'),
+          allowNull: false,
       },
       user_id: {
           type: DataTypes.STRING(30),
           allowNull: false,
+          unique: true,
       },
       pw: {
           type: DataTypes.STRING(30),
@@ -33,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
           type: DataTypes.ENUM('male', 'female'),
           allowNull: true,
       },
-      marketingChecked: {
+      allTermsChecked: {
           type: DataTypes.STRING(30),
           allowNull: false,
       }
