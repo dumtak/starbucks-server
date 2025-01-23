@@ -1,12 +1,14 @@
+
 const express = require("express");
 const cors = require("cors");
 const app = express();
 const models = require('./models');
 
+
 const port = 8080;
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const privateKey = crypto.randomBytes(32).toString('hex');
 
 app.use(express.json());
@@ -14,6 +16,10 @@ app.use(cors({
     origin: ['https://starbucks-vercel.vercel.app', 'http://localhost:3000'],
     credentials: true
 }))
+
+const path = require('path');
+const favicon = require('serve-favicon');
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 models.sequelize.sync()
     .then(() => {
