@@ -127,7 +127,12 @@ app.get('/users/check-id', (req, res) => {
         }
     }).catch((err) => {
         console.error(err);
-        res.send({ success: false, message: '서버 오류가 발생했습니다.' })
+        // res.send({ success: false, message: '서버 오류가 발생했습니다.' })
+        if (err.name === 'SequelizeConnectionError') {
+            return res.status(503).send({ success: false, message: '데이터베이스 연결 오류가 발생했습니다.' });
+        } else {
+            return res.status(500).send({ success: false, message: '서버 오류가 발생했습니다.' });
+        }
     })
 })
 
