@@ -21,6 +21,14 @@ module.exports = (sequelize, DataTypes) => {
       name: {
           type: DataTypes.STRING(30),
           allowNull: false,
+        },
+        zonecode: {
+            type: DataTypes.DATEONLY,
+            allowNull: false,
+        },
+    address: {
+        type: DataTypes.STRING(30),
+        allowNull: false,
       },
       phone: {
           type: DataTypes.STRING(30),
@@ -29,14 +37,18 @@ module.exports = (sequelize, DataTypes) => {
       email: {
           type: DataTypes.STRING(30),
           allowNull: false,
-      },
-      birth: {
-          type: DataTypes.DATEONLY,
-          allowNull: true,
-      },
-      sex: {
-          type: DataTypes.ENUM('male', 'female'),
-          allowNull: true,
+        },
+        birth: {
+            type: DataTypes.DATEONLY,
+            allowNull: false,
+        },
+        sex: {
+            type: DataTypes.ENUM('male', 'female'),
+            allowNull: true,
+        },
+        store:{
+            type: DataTypes.STRING(50),
+            allowNull: true,
       },
       allTermsChecked: {
           type: DataTypes.STRING(30),

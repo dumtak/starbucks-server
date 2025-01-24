@@ -13,7 +13,7 @@ const privateKey = crypto.randomBytes(32).toString('hex');
 
 app.use(express.json());
 app.use(cors({
-    origin: ['https://starbucks-vercel.vercel.app', 'http://localhost:3000'],
+    origin: ['https://starbucks-vercel.vercel.app', 'starbucks-nu-five.vercel.app','http://localhost:3000'],
     credentials: true
 }))
 
@@ -31,10 +31,10 @@ models.sequelize.sync()
 
 //회원가입
 app.post('/users', async (req, res) => {
-    const { type, user_id, pw, name, phone, email, birth, sex, allTermsChecked } = req.body;
+    const { type, user_id, pw, name, address, zonecode, phone, email, birth, sex, store, allTermsChecked } = req.body;
 
     // 필수 필드 체크
-    if (!type || !user_id || !pw || !name || !phone || !email || !allTermsChecked) {
+    if (!type || !user_id || !pw || !name || !address || !zonecode || !phone || !email || !allTermsChecked) {
         console.log("Missing fields:", req.body);
         return res.status(400).send('모든 필드를 입력해주세요');
     }
@@ -55,10 +55,13 @@ app.post('/users', async (req, res) => {
             user_id: user_id,
             pw: hashedPassword, // 해시된 비밀번호 저장
             name,
+            address,
+            zonecode,
             phone,
             email,
             birth, 
             sex,
+            store,
             allTermsChecked
         });
 
