@@ -29,8 +29,20 @@ models.sequelize.sync()
         console.error('Error syncing Sequelize:', err);
     });
 
+
+// // 여기에서 sync() 호출 시 alter: true 옵션을 사용하여 테이블 구조를 업데이트
+// models.sequelize.sync({ alter: true })
+//     .then(() => {
+//         console.log('Sequelize synced with model changes!');
+//     })
+//     .catch((err) => {
+//         console.error('Error syncing Sequelize:', err);
+//     });
+
+
 //회원가입
 app.post('/users', async (req, res) => {
+    console.log(req.body);
     const { type, user_id, pw, name, address, zonecode, phone, email, birth, sex, store, allTermsChecked } = req.body;
 
     // 필수 필드 체크
