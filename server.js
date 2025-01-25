@@ -29,8 +29,6 @@ models.sequelize.sync()
         console.error('Error syncing Sequelize:', err);
     });
 
-
-// // 여기에서 sync() 호출 시 alter: true 옵션을 사용하여 테이블 구조를 업데이트
 // models.sequelize.sync({ alter: true })
 //     .then(() => {
 //         console.log('Sequelize synced with model changes!');
@@ -39,6 +37,9 @@ models.sequelize.sync()
 //         console.error('Error syncing Sequelize:', err);
 //     });
 
+// Express 내장 미들웨어 사용
+app.use(express.json()); // JSON 형식의 데이터 파싱
+app.use(express.urlencoded({ extended: true })); // URL-encoded 데이터 파싱
 
 //회원가입
 app.post('/users', async (req, res) => {
