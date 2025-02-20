@@ -13,15 +13,17 @@ const crypto = require("crypto");
 const bcrypt = require('bcryptjs');
 const privateKey = crypto.randomBytes(32).toString('hex');
 
-const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
+const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 app.use(express.json());
+
 app.use(cors({
     origin: ['https://starbucks-vercel.vercel.app', 'starbucks-nu-five.vercel.app','http://localhost:3000'],
     credentials: true
 }))
 
 const path = require('path');
+
 const favicon = require('serve-favicon');
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
