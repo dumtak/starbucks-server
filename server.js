@@ -3,6 +3,8 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const models = require('./models');
+require("dotenv").config();
+const axios = require("axios");
 
 
 const port = 8080;
@@ -10,6 +12,8 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const bcrypt = require('bcryptjs');
 const privateKey = crypto.randomBytes(32).toString('hex');
+
+const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
 
 app.use(express.json());
 app.use(cors({
@@ -163,6 +167,36 @@ app.get('/users/find-id', (req, res) => {
     const {user_id} = req.query;
 
 })
+
+//지도 설정
+app.get("/api/nearby-stores", async (req, res) => {
+    const { lat, lng } = req.query;
+
+    if (!lat || !lng) {
+        return res.status(400).json({ error: "위치 정보가 필요합니다." });
+    }
+
+    try {
+        const apiUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=2000&type=cafe&keyword=스타벅스&key=${GOOGLE_MAPS_API_KEY}`;
+
+        console.log(`Google API 요청: ${apiUrl}`); // 요청 URL 로깅
+
+        const response = await axios.get(apiUrl);
+        const results = response.data.results;
+
+        console.log("Google API 응답:", results); // 응답 데이터 로깅
+
+        if (!results || results.length === 0) {
+            return res.status(404).json({ error: "근처에 스타벅스 매장이 없습니다." });
+        }
+
+        res.json(results); // 매장 정보 응답
+    } catch (error) {
+        console.error("Google Maps API 요청 오류:", error.response?.data || error.message);
+        res.status(500).json({ error: "매장 정보를 가져오는 데 실패했습니다." });
+    }
+});
+
 
 app.listen(port, () => {
     console.log('서버가 돌아가고 있습니다.')
